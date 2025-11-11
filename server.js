@@ -14,7 +14,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 // --- Environment / Config ---
 const S3_BUCKET = process.env.S3_BUCKET_NAME || 'testing1-bucket01';
 const AWS_REGION = process.env.AWS_REGION || 'eu-north-1';
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 // --- Fix for __dirname in ES modules ---
 const __filename = fileURLToPath(import.meta.url);
@@ -87,3 +87,4 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
+
