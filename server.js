@@ -1,10 +1,13 @@
-// server.js - Backend Node.js File (AWS SDK v3 version)
-
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { S3Client, ListObjectsV2Command, PutObjectCommand } from '@aws-sdk/client-s3';
+import { 
+  S3Client, 
+  ListObjectsV2Command, 
+  PutObjectCommand,
+  GetObjectCommand
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 // === Setup ===
@@ -36,15 +39,23 @@ app.use(express.static('public'));
 // Home route: List all images
 app.get('/', async (req, res) => {
   try {
-    const data = await s3.send(new ListObjectsV2Command({ Bucket: S3_BUCKET }));
+    const data = await s3.send(
+      new ListObjectsV2Command({ Bucket: S3_BUCKET })
+    );
+
     const images = [];
 
     if (data.Contents) {
       for (const obj of data.Contents) {
-        const url = await getSignedUrl(s3, new PutObjectCommand({
-          Bucket: S3_BUCKET,
-          Key: obj.Key,
-        }), { expiresIn: 3600 });
+        // FIX: Generate GET signed URL (viewable)
+        const url = await getSignedUrl(
+          s3,
+          new GetObjectCommand({
+            Bucket: S3_BUCKET,
+            Key: obj.Key,
+          }),
+          { expiresIn: 3600 } // 1 hour
+        );
 
         images.push({ name: obj.Key, url });
       }
@@ -87,4 +98,3 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
-
