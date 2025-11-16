@@ -30,7 +30,7 @@ jobs:
       - name: Trigger CodeDeploy
         run: |
           aws deploy create-deployment \
-          --application-name MyWebApp \
+          --application-name MyWebAppTest \
           --deployment-group-name MyDeploymentGroup \
           --s3-location bucket=testing1-bucket01,bundleType=zip,key=releases/release.zip
 
