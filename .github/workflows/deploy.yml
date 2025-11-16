@@ -23,7 +23,8 @@ jobs:
           aws-region: eu-north-1
 
       - name: Upload to S3
-        run: aws s3 cp release.zip s3://${{ secrets.S3_BUCKET }}/releases/release.zip
+        run: aws s3 cp release.zip s3://testing1-bucket01/releases/release.zip
+
 
 
       - name: Trigger CodeDeploy
@@ -31,5 +32,5 @@ jobs:
           aws deploy create-deployment \
           --application-name MyWebApp \
           --deployment-group-name MyDeploymentGroup \
-          --s3-location bucket=your-bucket-name,bundleType=zip,key=releases/release.zip
+          --s3-location bucket=testing1-bucket01,bundleType=zip,key=releases/release.zip
 
