@@ -95,7 +95,8 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 });
 
 // --- Start Server ---
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Server running on port ${PORT}`);
+app.listen(8080, '0.0.0.0', () => {
+  console.log(`✅ Server running on port 8080`);
 });
+
 
